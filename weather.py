@@ -23,14 +23,8 @@ def convert_date(iso_string):
     human_readable_date = store_iso_date.strftime('%A %d %B %Y')
     return human_readable_date
 
-result = convert_date('2020-02-01T07:00:00+08:00')
-print(result)
-
-
-
-
-
-
+# result = convert_date('2020-02-01T07:00:00+08:00')
+# print(result)
 
 """Converts an ISO formatted date into a human-readable format.
 
@@ -43,6 +37,7 @@ pass
 
 
 def convert_f_to_c(temp_in_fahrenheit):
+    return round(float((temp_in_fahrenheit - 32) * 5/9, 1))
     """Converts a temperature from Fahrenheit to Celcius.
 
     Args:
@@ -50,7 +45,10 @@ def convert_f_to_c(temp_in_fahrenheit):
     Returns:
         A float representing a temperature in degrees Celcius, rounded to 1 decimal place.
     """
-    pass
+test = convert_f_to_c(-10.0)
+print(test)
+
+pass
 
 
 def calculate_mean(weather_data):
