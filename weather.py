@@ -3,7 +3,6 @@ from datetime import datetime
 
 DEGREE_SYMBOL = u"\N{DEGREE SIGN}C"
 
-
 def format_temperature(temp):
     """Takes a temperature and returns it in string format with the degrees
         and Celcius symbols.
@@ -14,17 +13,33 @@ def format_temperature(temp):
         A string contain the temperature and "degrees Celcius."
     """
     return f"{temp}{DEGREE_SYMBOL}"
+# test = format_temperature('20')
+# print(test)
 
+#-------------------------------------------------
 
 def convert_date(iso_string):
-    """Converts and ISO formatted date into a human-readable format.
+    store_iso_date = datetime.fromisoformat(iso_string)
+    human_readable_date = store_iso_date.strftime('%A %d %B %Y')
+    return human_readable_date
 
-    Args:
-        iso_string: An ISO date string.
-    Returns:
-        A date formatted like: Weekday Date Month Year e.g. Tuesday 06 July 2021
-    """
-    pass
+result = convert_date('2020-02-01T07:00:00+08:00')
+print(result)
+
+
+
+
+
+
+
+"""Converts an ISO formatted date into a human-readable format.
+
+        Args:
+            iso_string: An ISO date string.
+        Returns:
+            A date formatted like: Weekday Date Month Year e.g. Tuesday 06 July 2021
+        """
+pass
 
 
 def convert_f_to_c(temp_in_fahrenheit):
