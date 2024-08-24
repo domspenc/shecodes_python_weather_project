@@ -77,28 +77,116 @@ def calculate_mean(weather_data):
     """
 pass
 
-
 def load_data_from_csv(csv_file):
+    # open the csv file using csv.reader
+    # i tried using readlines() but that returns another list which complicated my code!
+    with open(csv_file) as csv_file:
+        csv_file_data = csv.reader(csv_file)
+        # skips the header row
+        next(csv_file_data)
+  
+        # create an empty list to store our eventual newly formatted list in
+        final_list = []
+        # for loop to read through the csv file
+        for data in csv_file_data:
+                # if statement to catch only lines that ARE NOT (!=) empty
+                if data != []:
+                    # accessing the date string using 0 index and storing in variable
+                    date = data[0]
+                    # accessing the min_temp string using 1 index, converting it to an integer (because the for loop will return everything as a string!) and storing in variable
+                    temp_one = int(data[1])
+                    # doing the same for max_temp
+                    temp_two = int(data[2])
+                    # adding to our empty list using the data within the variables, and labeling each column
+                    final_list.append([date, temp_one, temp_two])
+        return final_list
+    
+# MY ORIGINAL CODE - which returns the correct result(!!), but still creates an error (?) for this specific test for whatever reason?!
+# def load_data_from_csv(csv_file):
+#     # open the csv file using readlines() function - this returns a list of strings within another list
+#     with open(csv_file) as csv_file:
+#         csv_file_data = csv_file.readlines()
+#     # create an empty list to store our eventual newly formatted list in
+#     final_list = []
+#     # for loop to read through the csv file, from every row after the 1st one (hence [1:])
+#     for data in csv_file_data[1:]:
+#             # split columns by ',' with split() and remove any trailing whitespace with strip()
+#             column = data.strip().split(',')
+#             # accessing the date string using 0 index and storing in variable
+#             date = column[0]
+#             # accessing the min_temp string using 1 index, converting it to an integer (because the for loop will return everything as a string!) and storing in variable
+#             temp_one = int(column[1])
+#             # doing the same for max_temp
+#             temp_two = int(column[2])
+#             # adding to our empty list using the data within the variables, and labeling each column
+#             final_list.append([date, temp_one, temp_two])
+#     return final_list
 
-    """Reads a csv file and stores the data in a list.
+# test = load_data_from_csv('tests/data/example_one.csv') 
+# print(test)
 
-    Args:
-        csv_file: a string representing the file path to a csv file.
-    Returns:
-        A list of lists, where each sublist is a (non-empty) line in the csv file.
-    """
-    pass
+
+"""Reads a csv file and stores the data in a list.
+
+Args:
+    csv_file: a string representing the file path to a csv file.
+Returns:
+    A list of lists, where each sublist is a (non-empty) line in the csv file.
+"""
+pass
 
 
 def find_min(weather_data):
-    """Calculates the minimum value in a list of numbers.
+    try:
+        min_value = min(weather_data)
+    except:
+        return ()
+    
+    for i in weather_data:
+        if isinstance(i, str):
+                try:
+                    value = float(i)
+                    weather_data = value
+                except ValueError:
+                    continue       
+    
+    index = 0
 
-    Args:
-        weather_data: A list of numbers.
-    Returns:
-        The minimum value and it's position in the list. (In case of multiple matches, return the index of the *last* example in the list.)
-    """
-    pass
+    for i, value in enumerate(weather_data):
+            if value <= min_value:
+                min_value = value
+                index = i
+
+    return min_value, index
+
+# def find_min(weather_data):
+#     min_value = min(weather_data)
+#     index = 0
+
+#     for i, value in enumerate(weather_data):
+#         if isinstance(value, str):
+#             try:
+#                 weather_data[i] = int(value)
+#             except ValueError:
+#                 continue
+#         if value < min_value:
+#             min_value = value
+#             index = i
+
+#     return min_value, index
+
+test = find_min([10.4, 14.5, 12.9, 8.9, 10.5, 11.7, '7.4'])
+print(test)
+
+    
+"""Calculates the minimum value in a list of numbers.
+
+Args:
+    weather_data: A list of numbers.
+Returns:
+    The minimum value and it's position in the list. (In case of multiple matches, return the index of the *last* example in the list.)
+"""
+pass
 
 
 def find_max(weather_data):
