@@ -4,6 +4,8 @@ from datetime import datetime
 DEGREE_SYMBOL = u"\N{DEGREE SIGN}C"
 
 def format_temperature(temp):
+    return f"{temp}{DEGREE_SYMBOL}"
+
     """Takes a temperature and returns it in string format with the degrees
         and Celcius symbols.
 
@@ -12,7 +14,7 @@ def format_temperature(temp):
     Returns:
         A string contain the temperature and "degrees Celcius."
     """
-    return f"{temp}{DEGREE_SYMBOL}"
+    
 # test = format_temperature('20')
 # print(test)
 
@@ -38,6 +40,10 @@ pass
 
 def convert_f_to_c(temp_in_fahrenheit):
     return round(float((temp_in_fahrenheit - 32) * 5/9, 1))
+
+# test = convert_f_to_c(-10.0)
+# print(test)
+
     """Converts a temperature from Fahrenheit to Celcius.
 
     Args:
@@ -45,24 +51,35 @@ def convert_f_to_c(temp_in_fahrenheit):
     Returns:
         A float representing a temperature in degrees Celcius, rounded to 1 decimal place.
     """
-test = convert_f_to_c(-10.0)
-print(test)
 
 pass
 
 
 def calculate_mean(weather_data):
-    """Calculates the mean value from a list of numbers.
+    try:
+        # Try to calculate the mean with the assumption that all data is numeric
+        return float((sum(weather_data) / len(weather_data)))
+    except TypeError:
+        # If a TypeError occurs, convert each element to a float
+        weather_data_converted = [float(data) for data in weather_data]
+        return sum(weather_data_converted) / len(weather_data_converted)
+    
+        
+# test = calculate_mean([49, 57, 56, 55, 53])
+# print(test)
+
+"""Calculates the mean value from a list of numbers.
 
     Args:
         weather_data: a list of numbers.
     Returns:
         A float representing the mean value.
     """
-    pass
+pass
 
 
 def load_data_from_csv(csv_file):
+
     """Reads a csv file and stores the data in a list.
 
     Args:
