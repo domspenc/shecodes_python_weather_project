@@ -39,12 +39,12 @@ pass
 
 
 def convert_f_to_c(temp_in_fahrenheit):
-    return round(float((temp_in_fahrenheit - 32) * 5/9, 1))
+    return round((float(temp_in_fahrenheit) - 32) * 5/9, 1)
 
-# test = convert_f_to_c(-10.0)
-# print(test)
+test = convert_f_to_c(-10.0)
+print(test)
 
-    """Converts a temperature from Fahrenheit to Celcius.
+"""Converts a temperature from Fahrenheit to Celcius.
 
     Args:
         temp_in_fahrenheit: float representing a temperature.
@@ -137,46 +137,30 @@ pass
 
 
 def find_min(weather_data):
-    try:
-        min_value = min(weather_data)
-    except:
+    if weather_data == []:
         return ()
     
-    for i in weather_data:
-        if isinstance(i, str):
-                try:
-                    value = float(i)
-                    weather_data = value
-                except ValueError:
-                    continue       
+    # Convert all elements to integers (if needed) using a for loop
+    # By using range(len(weather_data)), we're iterating over the indexes of the list (0, 1, 2, etc.). This allows us to access and modify elements directly in the list using weather_data[i].
+    # If we use a for loop directly on the list like for num in weather_data, we get each element (num), but we cannot modify the original list directly because num is just a copy of the value, not a reference to the actual list element.
+    for i in range(len(weather_data)):
+        if not isinstance(weather_data[i], int):
+            weather_data[i] = float(weather_data[i])
     
-    index = 0
+    min_value = weather_data[0]  # Initialize the minimum value
+    min_index = 0  # Initialize the index of the minimum value
+    
+    # Loop through the list to find the minimum value and its last occurrence
+    for index, num in enumerate(weather_data):
+        if num <= min_value:  # Find the last occurrence of the minimum
+            min_value = num
+            min_index = index
+    
+    return min_value, min_index
 
-    for i, value in enumerate(weather_data):
-            if value <= min_value:
-                min_value = value
-                index = i
+# test = find_min([10.4, 14.5, 12.9, 8.9, 10.5, 11.7])
+# print(test)
 
-    return min_value, index
-
-# def find_min(weather_data):
-#     min_value = min(weather_data)
-#     index = 0
-
-#     for i, value in enumerate(weather_data):
-#         if isinstance(value, str):
-#             try:
-#                 weather_data[i] = int(value)
-#             except ValueError:
-#                 continue
-#         if value < min_value:
-#             min_value = value
-#             index = i
-
-#     return min_value, index
-
-test = find_min([10.4, 14.5, 12.9, 8.9, 10.5, 11.7, '7.4'])
-print(test)
 
     
 """Calculates the minimum value in a list of numbers.
@@ -190,14 +174,36 @@ pass
 
 
 def find_max(weather_data):
-    """Calculates the maximum value in a list of numbers.
+    if weather_data == []:
+        return ()
+    
+    # Convert all elements to integers (if needed) using a for loop
+    for i in range(len(weather_data)):
+        if not isinstance(weather_data[i], int):
+            weather_data[i] = float(weather_data[i])
+    
+    max_value = weather_data[0]  # Initialize the minimum value
+    max_index = 0  # Initialize the index of the minimum value
+    
+    # Loop through the list to find the minimum value and its last occurrence
+    for index, num in enumerate(weather_data):
+        if num >= max_value:  # Find the last occurrence of the minimum
+            max_value = num
+            max_index = index
+    
+    return max_value, max_index
+
+test = find_min([10.4, 14.5, 12.9, 8.9, 10.5, 11.7])
+print(test)
+
+"""Calculates the maximum value in a list of numbers.
 
     Args:
         weather_data: A list of numbers.
     Returns:
         The maximum value and it's position in the list. (In case of multiple matches, return the index of the *last* example in the list.)
     """
-    pass
+pass
 
 
 def generate_summary(weather_data):
