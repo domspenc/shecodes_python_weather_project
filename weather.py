@@ -179,7 +179,7 @@ def find_max(weather_data):
     
     # Convert all elements to integers (if needed) using a for loop
     for i in range(len(weather_data)):
-        if not isinstance(weather_data[i], int):
+        if isinstance(weather_data[i], str):
             weather_data[i] = float(weather_data[i])
     
     max_value = weather_data[0]  # Initialize the minimum value
@@ -193,7 +193,7 @@ def find_max(weather_data):
     
     return max_value, max_index
 
-test = find_min([10.4, 14.5, 12.9, 8.9, 10.5, 11.7])
+test = find_max([10.4, 14.5, 12.9, 8.9, 10.5, 11.7])
 print(test)
 
 """Calculates the maximum value in a list of numbers.
@@ -207,14 +207,69 @@ pass
 
 
 def generate_summary(weather_data):
-    """Outputs a summary for the given weather data.
+        min_temps = []
+        max_temps = []
+        for i in range(len(weather_data)):
+            min_temps.append(weather_data[i][1])
+            max_temps.append(weather_data[i][2])
+        
+        temp_list = min_temps + max_temps
+        min_temp = find_min(temp_list)[0]
+        max_temp = find_max(temp_list)[0]
+
+        for data in weather_data:
+            if min_temp == data[1] or min_temp == data[2]:
+                min_date = convert_date(data[0])
+                print(min_date)
+            elif max_temp == data[1] or max_temp == data[2]:
+                max_date = convert_date(data[0])
+
+        av_low = format_temperature(convert_f_to_c(calculate_mean(min_temps)))
+        av_high = format_temperature(convert_f_to_c(calculate_mean(max_temps)))
+        min_temp = format_temperature(convert_f_to_c(min_temp))
+        max_temp = format_temperature(convert_f_to_c(max_temp))
+        
+        return (f"{len(weather_data)} Day Overview\n"
+                f"  The lowest temperature will be {min_temp}, and will occur on {min_date}.\n"
+                f"  The highest temperature will be {max_temp}, and will occur on {max_date}.\n"
+                f"  The average low this week is {av_low}.\n"
+                f"  The average high this week is {av_high}.\n"
+                )
+
+example_one = [
+            ["2020-06-19T07:00:00+08:00", 47, 46],
+            ["2020-06-20T07:00:00+08:00", 51, 67],
+            ["2020-06-21T07:00:00+08:00", 58, 72],
+            ["2020-06-22T07:00:00+08:00", 59, 71],
+            ["2020-06-23T07:00:00+08:00", 52, 71],
+            ["2020-06-24T07:00:00+08:00", 52, 67],
+            ["2020-06-25T07:00:00+08:00", 48, 66],
+            ["2020-06-26T07:00:00+08:00", 53, 66]
+        ]
+
+test = generate_summary(example_one)
+print(test)
+
+
+            # if isinstance(weather_data[i][0], str):
+            #     print(weather_data[i][0])
+            #     date.append(convert_date(weather_data[i][0]))
+
+        # for i in weather_data:
+        #     print(i)
+            # min_temp.append(min(weather_data[i]))
+            # min_temp.append(weather_data[i][1])
+            # print(min_temp)
+
+
+"""Outputs a summary for the given weather data.
 
     Args:
         weather_data: A list of lists, where each sublist represents a day of weather data.
     Returns:
         A string containing the summary information.
     """
-    pass
+pass
 
 
 def generate_daily_summary(weather_data):
