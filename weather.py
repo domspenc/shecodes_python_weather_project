@@ -241,7 +241,7 @@ def generate_daily_summary(weather_data):
 
             daily_summaries.append(daily_summary) # adds each daily summary to the <daily_summaries> list
 
-        return "\n".join(daily_summaries) # joins each of these summaries together with an <\n> space between them, and stores this in the <generate_daily_summary> function
+        return "\n".join(daily_summaries) + "\n" # joins each of these summaries together with an <\n> space between them, and stores this in the <generate_daily_summary> function
 
 
 # CODE TO TEST
