@@ -4,8 +4,6 @@ from datetime import datetime
 DEGREE_SYMBOL = u"\N{DEGREE SIGN}C" # sets a 'not-to-be-changed' variable called <DEGREE_SYMBOL> to the code version of the degree symbol, to use later
 
 def format_temperature(temp):
-    return f"{temp}{DEGREE_SYMBOL}" # passes a temp argument into the <format_temperature> function, then adds the degree symbol from above, and stores it in the <format_temperature> function
-
     """Takes a temperature and returns it in string format with the degrees
         and Celcius symbols.
 
@@ -14,7 +12,11 @@ def format_temperature(temp):
     Returns:
         A string contain the temperature and "degrees Celcius."
     """
-    
+    # passes a temp argument into the <format_temperature> function, then adds the degree symbol from above, and stores
+    # it in the <format_temperature> function
+    return f"{temp}{DEGREE_SYMBOL}"
+
+        
 # test = format_temperature('20')
 # print(test)
 
@@ -29,6 +31,7 @@ def convert_date(iso_string):
 # result = convert_date('2020-02-01T07:00:00+08:00')
 # print(result)
 
+# TODO(Dominique): Move to line after the function
 """Converts an ISO formatted date into a human-readable format.
 
         Args:
@@ -40,6 +43,7 @@ pass
 
 
 def convert_f_to_c(temp_in_fahrenheit):
+    # TODO(Dominique): Limit comments to 120 columns
     return round((float(temp_in_fahrenheit) - 32) * 5/9, 1) # convert argument <temp_in_fahrenheit> to a float, perform the equation on that number then store the rounded number in the <convert_f_to_c> function (notice the brackets to identify what happens when!)
 
 # CODE TO TEST
@@ -93,6 +97,17 @@ def load_data_from_csv(csv_file):
                     final_list.append([date, temp_one, temp_two]) # adding to our empty list <final_list> using the data within the variables, and labeling each column
         return final_list # store the result in the <load_data_from_csv> function
 
+    # Alternative way using dictreader
+    # with open(csv_file) as csv_file:
+    #     csv_dictreader = csv.DictReader(csv_dictreader)
+    #     weather_data = []
+
+    #     for data in csv_file:
+    #         if row != []:
+    #             weather_data.append([data["date"], float(data["min"]), float(data["max"])])
+        
+    #     return weather_data
+
 """Reads a csv file and stores the data in a list.
 
 Args:
@@ -109,8 +124,10 @@ def find_min(weather_data):
     
     # start a for loop using range(len(weather_data)), to iterate over the indexes of the list (0, 1, 2, etc.). this means I can access and modify elements directly in the list using weather_data[i].
     # if I use a for loop directly on the list like <for num in weather_data>, I can get each element (<num>), but I can't modify the original list directly because <num> is just a copy of the value, not a reference to the actual list element.
+    # weather_data_converted = weather_data
     for i in range(len(weather_data)):
         if not isinstance(weather_data[i], int): # <isinstance> looks for instances that are NOT a specific data type, in this case not 'int'
+            # weather_data_converted.append(float(weather_data[i]))
             weather_data[i] = float(weather_data[i]) # find any other data types, convert them to floats then store that value in the current iteration of <weather_data> using the <weather_data[i]> variable
     
     min_value = weather_data[0]  # set the minimum value and store it in the <min_value> variable
@@ -174,32 +191,47 @@ pass
 def generate_summary(weather_data):
         min_temps = [] # create an empty list called <min_temps>, to use later when calculating mean
         max_temps = [] # same as above ^
-        for i in range(len(weather_data)): # for loop to iterate over indices in the <weather_data> list of lists
-            min_temps.append(weather_data[i][1]) # find the min temps in <weather_data[i][1]>; this takes the data from each iteration that is found as the second value (index 1)
-            max_temps.append(weather_data[i][2]) # find the min temps in <weather_data[i][2]>; this takes the data from each iteration that is found as the third value (index 2)
-        
-        temp_list = min_temps + max_temps # concatenate the <min_temps> and <max_temps> lists so I can find the true min value (I do this because if the temps are swapped between columns, I need to find the minimum value regardless of which column it's in [see example two!]) then store the final value in the <temps_list> variable
-        min_temp = find_min(temp_list)[0] # find the min value of <temp_list> then store it in the <min_temp> variable. I need to specify the location using [0] as <temp_list> is a list!
-        max_temp = find_max(temp_list)[0] # find the max value of <temp_list> then store it in the <max_temp> variable
+        dates = []
 
-        for data in weather_data: # create for loop to iterate over the lists in <weather_data>
-            print(data) 
-            if min_temp == data[1] or min_temp == data[2]: # compare the value stored in <min_temp> with the second and third values (indexes 1 and 2) in <weather_data>  
-                min_date = convert_date(data[0]) # if it's a match, store the associated date value (index 0) in <weather_data> in a variable called <min_date>
-            elif max_temp == data[1] or max_temp == data[2]: # do the same as the above for the max temp and max date
-                max_date = convert_date(data[0])
+        # TODO(Dominique): Try to use list comprehensions
+        # dates = [point[0] for point in weather_data]
+
+        for point in weather_data: # for loop to iterate over indices in the <weather_data> list of lists
+            dates.append(point[0])
+            min_temps.append(point[1]) # find the min temps in <weather_data[i][1]>; this takes the data from each iteration that is found as the second value (index 1)
+            max_temps.append(point[2]) # find the min temps in <weather_data[i][2]>; this takes the data from each iteration that is found as the third value (index 2)
+
+        # for i in range(len(weather_data)): # for loop to iterate over indices in the <weather_data> list of lists
+            # min_temps.append(weather_data[i][1]) # find the min temps in <weather_data[i][1]>; this takes the data from each iteration that is found as the second value (index 1)
+            # max_temps.append(weather_data[i][2]) # find the min temps in <weather_data[i][2]>; this takes the data from each iteration that is found as the third value (index 2)
+        
+        # temp_list = min_temps + max_temps # concatenate the <min_temps> and <max_temps> lists so I can find the true min value (I do this because if the temps are swapped between columns, I need to find the minimum value regardless of which column it's in [see example two!]) then store the final value in the <temps_list> variable
+        # Unpack the contents of a tuple (separate by comma)
+        min_temp, min_temp_index = find_min(min_temps) # find the min value of <temp_list> then store it in the <min_temp> variable. I need to specify the location using [0] as <temp_list> is a list!
+        min_date = convert_date(dates[min_temp_index])
+
+        max_temp, max_temp_index = find_max(max_temps) # find the max value of <temp_list> then store it in the <max_temp> variable
+        max_date = convert_date(dates[max_temp_index])
+
+        # for data in weather_data: # create for loop to iterate over the lists in <weather_data>
+        #     print(data) 
+        #     if min_temp == data[1] or min_temp == data[2]: # compare the value stored in <min_temp> with the second and third values (indexes 1 and 2) in <weather_data>  
+        #         min_date = convert_date(data[0]) # if it's a match, store the associated date value (index 0) in <weather_data> in a variable called <min_date>
+        #     elif max_temp == data[1] or max_temp == data[2]: # do the same as the above for the max temp and max date
+        #         max_date = convert_date(data[0])
 
         av_low = format_temperature(convert_f_to_c(calculate_mean(min_temps))) # calculate the mean of all the values in the <min_temps> list, then use the functions from above to convert the number to celcius, then format it to include the degree symbol! I then store it in the <av_low> variable
         av_high = format_temperature(convert_f_to_c(calculate_mean(max_temps))) # same as above ^ for <av_high> variable
         min_temp = format_temperature(convert_f_to_c(min_temp)) # convert the value in <min_temp> to celcius, then format it to include the degree symbol and store it in the <min_temp> variable
         max_temp = format_temperature(convert_f_to_c(max_temp)) # same as above ^ for <max_temp> variable
         
-        return (f"{len(weather_data)} Day Overview\n" # this is the final section, using the variables to create a summary!
-                f"  The lowest temperature will be {min_temp}, and will occur on {min_date}.\n"
-                f"  The highest temperature will be {max_temp}, and will occur on {max_date}.\n"
-                f"  The average low this week is {av_low}.\n"
-                f"  The average high this week is {av_high}.\n"
-                )
+        return (
+            f"{len(weather_data)} Day Overview\n" # this is the final section, using the variables to create a summary!
+            f"  The lowest temperature will be {min_temp}, and will occur on {min_date}.\n"
+            f"  The highest temperature will be {max_temp}, and will occur on {max_date}.\n"
+            f"  The average low this week is {av_low}.\n"
+            f"  The average high this week is {av_high}.\n"
+        )
 
 # CODE TO TEST
 # example_one = [
@@ -226,22 +258,24 @@ pass
 
 
 def generate_daily_summary(weather_data):
-        daily_summaries = [] # create an empty list called <daily_summaries>, to store each iteration of our summary below into a list
+        daily_summaries = "" # create an empty list called <daily_summaries>, to store each iteration of our summary below into a list
 
         for i in range(len(weather_data)): # for loop to iterate over indices in the <weather_data> list of lists
             date = convert_date(weather_data[i][0]) # find the dates in <weather_data[i][0]>; this takes the data from each iteration that is found as the first value (index 0)
             min_temp = format_temperature(convert_f_to_c(weather_data[i][1])) # find the temperatures in <weather_data[i][1]>; this takes the data from each iteration that is found as the second value (index 1), converts it to celcius and formats it to include the degree symbol, then stores it in the <min_temp> variable
             max_temp = format_temperature(convert_f_to_c(weather_data[i][2])) # same as above but takes the data from each iteration that is found as the third value (index 2) and stores it in the <max_temp> variable
 
-            daily_summary = ( # create the daily summary for each iteration within the loop, using the data stored in the above variables
+            daily_summaries += ( # create the daily summary for each iteration within the loop, using the data stored in the above variables
                 f"---- {date} ----\n"
                 f"  Minimum Temperature: {min_temp}\n"
-                f"  Maximum Temperature: {max_temp}\n"
+                f"  Maximum Temperature: {max_temp}\n\n"
             )
 
-            daily_summaries.append(daily_summary) # adds each daily summary to the <daily_summaries> list
+            # daily_summaries.append(daily_summary) # adds each daily summary to the <daily_summaries> list
+        
+        return daily_summaries
 
-        return "\n".join(daily_summaries) + "\n" # joins each of these summaries together with an <\n> space between them, and stores this in the <generate_daily_summary> function
+        # return "\n".join(daily_summaries) + "\n" # joins each of these summaries together with an <\n> space between them, and stores this in the <generate_daily_summary> function
 
 
 # CODE TO TEST

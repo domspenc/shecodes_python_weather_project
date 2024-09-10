@@ -52,3 +52,10 @@ class GenerateSummaryTests(unittest.TestCase):
             expected_result = txt_file.read()
         result = weather.generate_summary(self.example_three)
         self.assertEqual(expected_result, result)
+
+
+            daily_summaries += ( # create the daily summary for each iteration within the loop, using the data stored in the above variables
+                f"---- {date} ----\n"
+                f"  Minimum Temperature: {min_temp}\n"
+                f"  Maximum Temperature: {max_temp}\n\n"
+            )
